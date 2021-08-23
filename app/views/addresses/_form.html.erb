@@ -1,0 +1,144 @@
+<%= form_with(model: address, local: true) do |form| %>
+  <% if address.errors.any? %>
+        <% address.errors.full_messages.each do |message| %>
+          <script type="text/javascript">
+            toastr.error('<%= message %>');
+          </script>
+        <% end %>
+  <% end %>
+  
+  <div class="form" style="padding: 1rem">
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <%= form.label :zipcode, I18n.t('activerecord.attributes.address.zipcode').upcase, class: "form-label" %>
+        <div class="input-group">
+          <%= form.text_field :zipcode, class: "form-control", maxlength: 9 %>
+          <button type="button" class="btn btn-info" onclick="getAddress()">Pesquisar</button>
+        </div>
+      </div>
+      <div class="col-sm-8" style="display: flex; align-items: end; justify-content: flex-end;">
+        <div class="form-check form-check-inline">
+          <%= radio_button_tag 'via', 'gem', true, class: "form-check-input" %>
+          <label class="form-check-label" for="via_gem">
+            Gem Correios-CEP
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <%= radio_button_tag 'via', 'api', false, class: "form-check-input" %>
+          <label class="form-check-label" for="via_api">
+            API ViaCEP
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <%= form.label :address, I18n.t('activerecord.attributes.address.address'), class: "form-label" %>
+        <%= text_field_tag :address_view, address.address,class: "form-control", disabled: 'disabled' %>
+        <%= form.hidden_field :address, class: "form-control" %>
+      </div>
+      <div class="col-sm-6">
+        <%= form.label :neigh, I18n.t('activerecord.attributes.address.neigh'), class: "form-label" %>
+        <%= text_field_tag :neigh_view, address.neighborhood.nil? ? "" : address.neighborhood.name, class: "form-control", disabled: 'disabled' %>
+        <%= form.hidden_field :neigh, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <%= form.label :city, I18n.t('activerecord.attributes.address.city'), class: "form-label" %>
+        <%= text_field_tag :city_view, address.neighborhood.nil? ? "" : address.neighborhood.city.nil? ? "" : address.neighborhood.city.name, class: "form-control", disabled: 'disabled' %>
+        <%= form.hidden_field :city, class: "form-control" %>
+      </div>
+      <div class="col-sm-6">
+        <%= form.label :state, I18n.t('activerecord.attributes.address.state'), class: "form-label" %>
+        <%= text_field_tag :state_view, address.neighborhood.nil? ? "" : address.neighborhood.city.nil? ? "" : address.neighborhood.city.state.nil? ? "" : address.neighborhood.city.state.name, class: "form-control", disabled: 'disabled' %>
+        <%= form.hidden_field :state, class: "form-control" %>
+      </div>
+    </div>
+    <div class="actions mb-3">
+    <%= form.submit "Salvar", class: "btn btn-primary", id: "salvar", disabled: true  %>
+    <%= link_to 'Voltar', addresses_path, class: "btn btn-danger", style: "color: white"%>
+    </div>
+  </div>
+<% end %>
+<script type="text/javascript">
+  VMasker(document.getElementById("address_zipcode")).maskPattern("99999-999");
+  $(document).on('turbolinks:load', () => {
+    $('form').on('keypress', e => {
+        if (e.keyCode == 13) {
+          getAddress();
+            return false;
+        }
+    });
+  });
+
+  function getAddress(){
+    var zipcode = document.getElementById("address_zipcode").value.replace(/()-/g,'');
+    var validacep = /^[0-9]{8}$/;
+    if (zipcode != "") {
+      if(validacep.test(zipcode)) {
+        if(document.getElementById("via_gem").checked){
+          $.ajax({
+            url : "/addresses/load_address_data",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type : "post",
+            data : {zipcode: zipcode},
+            success: function(data, textStatus, jqXHR) {
+              if(jQuery.isEmptyObject(data.dados) == true){
+                limpa_formulário_cep();
+                toastr.error('CEP não encontrado!');
+              } else {
+                document.getElementById("address_view").value = data.dados.address;
+                document.getElementById("address_address").value = data.dados.address;
+                document.getElementById("neigh_view").value = data.dados.neighborhood;
+                document.getElementById("address_neigh").value = data.dados.neighborhood;
+                document.getElementById("city_view").value = data.dados.city;
+                document.getElementById("address_city").value = data.dados.city;
+                document.getElementById("state_view").value = data.dados.state;
+                document.getElementById("address_state").value = data.dados.state;
+                document.getElementById("salvar").disabled = false;
+              }
+            }
+          });
+        } else if(document.getElementById("via_api").checked){
+          $.getJSON("https://viacep.com.br/ws/"+ zipcode +"/json/?callback=?", function(dados) {
+            if (!("erro" in dados)) {
+              document.getElementById("address_view").value = dados.logradouro;
+              document.getElementById("address_address").value = dados.logradouro;
+              document.getElementById("neigh_view").value = dados.bairro;
+              document.getElementById("address_neigh").value = dados.bairro;
+              document.getElementById("city_view").value = dados.localidade;
+              document.getElementById("address_city").value = dados.localidade;
+              document.getElementById("state_view").value = dados.uf;
+              document.getElementById("address_state").value = dados.uf;
+              document.getElementById("salvar").disabled = false;
+            } else {
+              limpa_formulário_cep();
+              toastr.error('CEP não encontrado!');
+            }
+          });
+        }
+      } else {
+        toastr.error('CEP Inválido!');
+        limpa_formulário_cep();
+      }
+    } else {
+      toastr.error('CEP Inválido!');
+      limpa_formulário_cep();
+    }
+  }
+
+  function limpa_formulário_cep() {
+    document.getElementById("address_view").value = null;
+    document.getElementById("address_address").value = null;
+    document.getElementById("neigh_view").value = null;
+    document.getElementById("address_neigh").value = null;
+    document.getElementById("city_view").value = null;
+    document.getElementById("address_city").value = null;
+    document.getElementById("state_view").value = null;
+    document.getElementById("address_state").value = null;
+    document.getElementById("salvar").disabled = true;
+  }
+
+
+</script>

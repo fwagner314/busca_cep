@@ -1,0 +1,12 @@
+/* app/javascript/stylesheets/application.scss */
+/* @import "~bootstrap/scss/bootstrap"; */
+/* this will import the scss file inside node_modules/bootstrap/scss/bootstrap.scss */
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+@import '~@fortawesome/fontawesome-free/scss/brands.scss';
+
+@import "bootstrap/scss/bootstrap";
+
+@import 'toastr/toastr';

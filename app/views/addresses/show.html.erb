@@ -1,0 +1,61 @@
+<div class="new" style="padding: 1rem">
+	<div class="card">
+	    <h5 class="card-header">Visualizar Endereço</h5>
+	    <div class="card-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+              	<div class="row">
+	                <div class="col-sm-4">
+	                  <label class="control-label">
+              			<%= I18n.t('activerecord.attributes.address.zipcode') %>
+	              	  </label>
+	                  <p style="color:#565555;" class="form-control">
+	                    <%= @address.zipcode.to_s.scan(/.{1,5}/).join("-") %>
+	                  </p>
+	                </div>
+	                <div class="col-sm-8">
+	                  <label class="ontrol-label">
+	              		<%= I18n.t('activerecord.attributes.address.address') %>
+	              	  </label>
+	                  <p style="color:#565555;" class="form-control">
+	                    <%= @address.address %>
+	                  </p>
+	                </div>
+              	</div>
+              </div>
+              <div class="form-group">
+              	<div class="row">
+              		<div class="col-sm-5">
+	                  <label class="control-label">
+	              		<%= I18n.t('activerecord.attributes.address.neigh') %>
+	              	  </label>
+	                  <p style="color:#565555;" class="form-control">
+	                    <%= @address.neighborhood.nil? ? " - " : @address.neighborhood.name %>
+	                  </p>
+	                </div>
+	                <div class="col-sm-5">
+	                  <label class="control-label">
+	              		<%= I18n.t('activerecord.attributes.address.city') %>
+	              	  </label>
+	                  <p style="color:#565555;" class="form-control">
+	                    <%= @address.neighborhood.nil? ? " - " : @address.neighborhood.city.nil? ? " - " : @address.neighborhood.city.name %>
+	                  </p>
+	                </div>
+	                <div class="col-sm-2">
+	                  <label class="control-label">
+	              		<%= I18n.t('activerecord.attributes.address.state') %>
+	              	  </label>
+	                  <p style="color:#565555;" class="form-control">
+	                    <%= @address.neighborhood.nil? ? " - " : @address.neighborhood.city.nil? ? " - " : @address.neighborhood.city.state.nil? ? " - " : @address.neighborhood.city.state.name %>
+	                  </p>
+	                </div>
+              	</div>
+              </div>
+          </form>
+			<div class="actions mb-3">
+			    <%= link_to 'Editar', edit_address_path(@address), class: "btn btn-warning", id: "salvar", disabled: true  %>
+			    <%= link_to 'Voltar', addresses_path, class: "btn btn-danger", style: "color: white"%>
+			</div>
+		</div>
+	</div>
+</div>

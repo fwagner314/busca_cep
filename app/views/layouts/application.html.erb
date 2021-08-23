@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AddressSearch</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+   
+    <!-- This refers to app/javascript/stylesheets/application.scss-->
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= yield %>
+    <% flash.each do |key, value| %>
+        <script type="text/javascript">
+            <% if key == "alert" %>
+                toastr.error("<%= value %>");
+            <% end %>
+            <% if key == "notice" %>
+               toastr.success("<%= value %>");
+            <% end %>
+        </script>
+    <% end %>
+  </body>
+</html>

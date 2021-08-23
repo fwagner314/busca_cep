@@ -1,0 +1,51 @@
+<div class="new" style="padding: 1rem">
+  <div class="card">
+      <h5 class="card-header">Endereços</h5>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><%= I18n.t('activerecord.attributes.address.zipcode') %></th>
+              <th><%= I18n.t('activerecord.attributes.address.address') %></th>
+              <th><%= I18n.t('activerecord.attributes.address.neigh') %></th>
+              <th><%= I18n.t('activerecord.attributes.address.city') %></th>
+              <th><%= I18n.t('activerecord.attributes.address.state') %></th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @addresses.each do |address| %>
+              <tr>
+                <td id="teste"><%= address.zipcode.to_s.scan(/.{1,5}/).join("-") %></td>
+                <td><%= address.address %></td>
+                <td><%= address.neighborhood.nil? ? " - " : address.neighborhood.name %></td>
+                <td><%= address.neighborhood.nil? ? " - " : address.neighborhood.city.nil? ? " - " : address.neighborhood.city.name %></td>
+                <td><%= address.neighborhood.nil? ? " - " : address.neighborhood.city.nil? ? " - " : address.neighborhood.city.state.nil? ? " - " : address.neighborhood.city.state.name %></td>
+                <td><%= link_to address, class: "btn btn-sm btn-info", "data-bs-toggle": "tooltip", "data-bs-placement": "top", "title": "Detalhes", style: "padding: 5px 10px" do %>
+                    <i class="fa fa-eye"></i>
+                  <% end %>
+                <%= link_to edit_address_path(address), class: "btn btn-sm btn-warning", "data-bs-toggle": "tooltip", "data-bs-placement": "top", "title": "Editar", style: "padding: 5px 10px" do %>
+                  <i class="fa fa-edit"></i>
+                <% end %>
+                <%= link_to address, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger", "data-bs-toggle": "tooltip", "data-bs-placement": "top", "title": "Apagar", style: "color: white; padding: 5px 12px" do %>
+                  <i class="fa fa-trash"></i>
+                <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <br>
+        <%= link_to 'Cadastrar Endereço', new_address_path, class: "btn btn-sm btn-primary", style: "color: white" %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+  $('[data-bs-toggle="tooltip"]').tooltip({
+    'delay': { show: 100, hide: 100 }
+   });
+});
+</script>
