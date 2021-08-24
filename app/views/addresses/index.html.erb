@@ -19,9 +19,9 @@
               <tr>
                 <td id="teste"><%= address.zipcode.to_s.scan(/.{1,5}/).join("-") %></td>
                 <td><%= address.address %></td>
-                <td><%= address.neighborhood.nil? ? " - " : address.neighborhood.name %></td>
-                <td><%= address.neighborhood.nil? ? " - " : address.neighborhood.city.nil? ? " - " : address.neighborhood.city.name %></td>
-                <td><%= address.neighborhood.nil? ? " - " : address.neighborhood.city.nil? ? " - " : address.neighborhood.city.state.nil? ? " - " : address.neighborhood.city.state.name %></td>
+                <td><%= address.get_neighborhood %></td>
+                <td><%= address.get_city %></td>
+                <td><%= address.get_state %></td>
                 <td><%= link_to address, class: "btn btn-sm btn-info", "data-bs-toggle": "tooltip", "data-bs-placement": "top", "title": "Detalhes", style: "padding: 5px 10px" do %>
                     <i class="fa fa-eye"></i>
                   <% end %>

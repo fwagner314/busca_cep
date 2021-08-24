@@ -39,19 +39,19 @@
       </div>
       <div class="col-sm-6">
         <%= form.label :neigh, I18n.t('activerecord.attributes.address.neigh'), class: "form-label" %>
-        <%= text_field_tag :neigh_view, address.neighborhood.nil? ? "" : address.neighborhood.name, class: "form-control", disabled: 'disabled' %>
+        <%= text_field_tag :neigh_view, address.get_neighborhood, class: "form-control", disabled: 'disabled' %>
         <%= form.hidden_field :neigh, class: "form-control" %>
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-sm-6">
         <%= form.label :city, I18n.t('activerecord.attributes.address.city'), class: "form-label" %>
-        <%= text_field_tag :city_view, address.neighborhood.nil? ? "" : address.neighborhood.city.nil? ? "" : address.neighborhood.city.name, class: "form-control", disabled: 'disabled' %>
+        <%= text_field_tag :city_view, address.get_city, class: "form-control", disabled: 'disabled' %>
         <%= form.hidden_field :city, class: "form-control" %>
       </div>
       <div class="col-sm-6">
         <%= form.label :state, I18n.t('activerecord.attributes.address.state'), class: "form-label" %>
-        <%= text_field_tag :state_view, address.neighborhood.nil? ? "" : address.neighborhood.city.nil? ? "" : address.neighborhood.city.state.nil? ? "" : address.neighborhood.city.state.name, class: "form-control", disabled: 'disabled' %>
+        <%= text_field_tag :state_view, address.get_state, class: "form-control", disabled: 'disabled' %>
         <%= form.hidden_field :state, class: "form-control" %>
       </div>
     </div>

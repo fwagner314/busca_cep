@@ -19,7 +19,7 @@ class Address < ApplicationRecord
 		if !self.neighborhood.nil?
 			return self.neighborhood.name
 		else
-			return "-"
+			return ""
 		end
 	end
 
@@ -28,10 +28,10 @@ class Address < ApplicationRecord
 			if !self.neighborhood.city.nil?
 				return self.neighborhood.city.name
 			else
-				return "-"
+				return ""
 			end
 		else
-			return "-"
+			return ""
 		end
 	end
 	def get_state
@@ -40,13 +40,13 @@ class Address < ApplicationRecord
 				if !self.neighborhood.city.state.nil?
 					return self.neighborhood.city.state.name
 				else
-					return "-"	
+					return ""	
 				end
 			else
-				return "-"
+				return ""
 			end
 		else
-			return "-"
+			return ""
 		end
 	end
 end

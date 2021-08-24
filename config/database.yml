@@ -80,6 +80,9 @@ test:
 #
 production:
   <<: *default
+  host: localhost
   database: avaliacao
+  schema_search_path: teste
   username: aval
-  password: <%= ENV['ADDRESS_SEARCH_DATABASE_PASSWORD'] %>
+  # password: <%= ENV['ADDRESS_SEARCH_DATABASE_PASSWORD'] %>
+  password: aval
