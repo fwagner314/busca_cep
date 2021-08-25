@@ -32,7 +32,7 @@ development:
   username: aval
 
   # The password associated with the postgres role (username).
-  password: aval
+  password: <%= ENV['BD_PRODUCTION_PASSWORD'] %>
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -84,5 +84,4 @@ production:
   database: avaliacao
   schema_search_path: teste
   username: aval
-  # password: <%= ENV['ADDRESS_SEARCH_DATABASE_PASSWORD'] %>
-  password: aval
+  password: <%= ENV['BD_PRODUCTION_PASSWORD'] %>
