@@ -2,7 +2,7 @@
   <div class="card">
       <h5 class="card-header">Endereços</h5>
       <div class="card-body">
-        <table class="table">
+        <table class="table table-hover table-bordered">
           <thead>
             <tr>
               <th><%= I18n.t('activerecord.attributes.address.zipcode') %></th>
@@ -36,6 +36,7 @@
             <% end %>
           </tbody>
         </table>
+        <%= paginate @addresses, always_display: true %>
         <br>
         <%= link_to 'Cadastrar Endereço', new_address_path, class: "btn btn-sm btn-primary", style: "color: white" %>
     </div>

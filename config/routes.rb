@@ -9,5 +9,5 @@ Rails.application.routes.draw do
   		get "cep_api/json/:cep", to: "cep_api#json"
   	end
   end
-  root to: "welcome#index"  
+  root to: "addresses#index"  
 end
