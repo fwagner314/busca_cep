@@ -17,12 +17,12 @@ port        ENV.fetch("PORT") { 3000 }
 environment ENV.fetch("RAILS_ENV") { "production" }
 
 # Specifies the `pidfile` that Puma will use.
-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
-# bind  "unix:///home/wagner/Deploy/busca_cep/shared/tmp/sockets/puma.sock"
-# pidfile "/home/wagner/Deploy/busca_cep/shared/tmp/pids/puma.pid"
-# state_path "/home/wagner/Deploy/busca_cep/shared/tmp/sockets/puma.state"
-# directory "/home/wagner/Deploy/busca_cep/current"
+bind  "unix:///home/wagner/Deploy/busca_cep/shared/tmp/sockets/puma.sock"
+pidfile "/home/wagner/Deploy/busca_cep/shared/tmp/pids/puma.pid"
+state_path "/home/wagner/Deploy/busca_cep/shared/tmp/sockets/puma.state"
+directory "/home/wagner/Deploy/busca_cep/current"
 
 # activate_control_app 'unix:///var/www/appname/shared/tmp/sockets/pumactl.sock'
 # Specifies the number of `workers` to boot in clustered mode.

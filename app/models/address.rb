@@ -8,6 +8,17 @@ class Address < ApplicationRecord
 
 	attr_accessor :neigh, :city, :state
 
+	trigger.before(:insert,:update) do
+	  "
+	    IF EXISTS (SELECT 1 FROM teste.addresses WHERE zipcode = NEW.zipcode) THEN
+	    	RAISE NOTICE 'CEP Já Cadastrado';
+            RETURN NULL;
+        ELSE
+            RETURN NEW;
+        END IF; "
+	  
+	end
+
 	def check_informations
 		state = State.find_or_create_by(name: self.state) if !self.state.blank?
 		city = City.find_or_create_by(name: self.city, state_id: state.id) if !self.city.blank?
