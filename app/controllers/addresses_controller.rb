@@ -17,6 +17,19 @@ class AddressesController < ApplicationController
     render :json => {dados: address, error: msg}
   end
 
+  def cep_api
+    param = params[:cep]
+    param = param.gsub(/[^0-9A-Za-z]/, '')
+    address = Address.where(zipcode: param).first
+    if !address.nil?
+      result = {Endereço: address.address, CEP: address.zipcode, Bairro: address.get_neighborhood,
+      Cidade: address.get_city, Estado: address.get_state}
+      render json: {status: 'SUCCESS', message:'CEP Encontrado!', data: result}
+    else
+      render json: {status: 'ERROR', message:'Cep Não Encontrado!', data: result}
+    end
+  end
+
   # GET /addresses/1 or /addresses/1.json
   def show
   end
